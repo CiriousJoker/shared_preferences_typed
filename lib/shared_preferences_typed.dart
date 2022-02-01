@@ -45,7 +45,20 @@ class PrefKeyNullable<T> {
   /// Use `.read()` if you don't have an existing [SharedPreferences] instance.
   /// Returns [defaultValue] during test mode.
   Future<T?> readSync(SharedPreferences prefs) async {
-    return prefs.get(key) as T?;
+    switch (T) {
+      case bool:
+        return prefs.getBool(key) as T?;
+      case double:
+        return prefs.getDouble(key) as T?;
+      case int:
+        return prefs.getInt(key) as T?;
+      case String:
+        return prefs.getString(key) as T?;
+      case List<String>:
+        return prefs.getStringList(key) as T?;
+      default:
+        return prefs.get(key) as T?;
+    }
   }
 
   /// Write a value to [SharedPreferences].
